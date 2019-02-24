@@ -44,3 +44,21 @@ alpha = 0.5
 beta = (1.0 - alpha)
 dst = cv2.addWeighted(peixe1, alpha, peixe2, beta, 0.0)
 cv2.imwrite("img/peixeblending.png", dst)
+
+#(D)
+# create matrix of zeros
+value = 0
+cont = 0
+gradient = np.zeros((510,510,3), dtype= 'uint8')
+for i in range (510):
+	
+	for j in range (510):
+		print value
+		gradient[i,j] = [value, value, value]
+
+	if value < 255 and cont == 2:
+		value = value +1
+		cont = 0
+	cont += 1
+
+cv2.imwrite("img/gradient.png", gradient)
