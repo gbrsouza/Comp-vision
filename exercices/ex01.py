@@ -53,7 +53,6 @@ gradient = np.zeros((510,510,3), dtype= 'uint8')
 for i in range (510):
 	
 	for j in range (510):
-		print value
 		gradient[i,j] = [value, value, value]
 
 	if value < 255 and cont == 2:

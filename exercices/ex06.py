@@ -1,26 +1,32 @@
-import os, numpy, PIL
-from PIL import Image
+import os
+import cv2
+import numpy as np 
 
-# Access all PNG files in directory
-allfiles = os.listdir(os.getcwd())
-imlist=[filename for filename in allfiles if  filename[-4:] in ["img/ruido/*.jpg"]
 
-# Assuming all images are the same size, get dimensions of first image
-w,h=Image.open(imlist[0]).size
-N=len(imlist)
+# define path of paste
+paste = 'img/ruido'
 
-# Create a numpy array of floats to store the average (assume RGB images)
-arr=numpy.zeros((h,w,3),numpy.float)
+# read all images
+paths = [ os.path.join(paste, name) for name in os.listdir(paste) ] 
+images = [ cv2.imread(name) for name in paths ]
 
-# Build up average pixel intensities, casting each image as an array of floats
-for im in imlist:
-    imarr=numpy.array(Image.open(im),dtype=numpy.float)
-    arr=arr+imarr/N
+# read images dimensions
+h, w, _ = images[0].shape
+size = len(images)
+
+# create a new image
+average = np.zeros((h,w,3), np.float)
+
+# average pixels 
+for i in range (h):
+	for j in range (w):
+		soma = [0,0,0]
+		for k in range (size):
+			soma += images[k][i,j]
+		average[i,j] = soma/size
 
 # Round values in array and cast as 8-bit integer
-arr=numpy.array(numpy.round(arr),dtype=numpy.uint8)
+average = np.array(np.round(average),dtype=np.uint8)
 
-# Generate, save and preview final image
-out=Image.fromarray(arr,mode="RGB")
-out.save("Average.png")
-out.show()
+# print image
+cv2.imwrite("img/average.jpg", average)
