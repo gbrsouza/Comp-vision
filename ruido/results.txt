@@ -1,0 +1,87 @@
+Filtro Geométrico
+-----------------------
+ruidoSalPimenta.jpg             Diff:  127.29311876208364
+ruidoGaussianoSalPimenta.jpg    Diff:  127.74248990269072
+ruidoGaussiano.jpg              Diff:  29.898495424057252
+ruidoPimenta.jpg                Diff:  140.27673312837618
+ruidoSal.jpg                    Diff:  39.359431922825536
+-----------------------
+
+Filtro Aritmétrico
+-----------------------
+ruidoSalPimenta.jpg             Diff:  32.71312834250882
+ruidoGaussianoSalPimenta.jpg    Diff:  32.78571926560043
+ruidoGaussiano.jpg              Diff:  28.315191719523344
+ruidoPimenta.jpg                Diff:  51.95888133484321
+ruidoSal.jpg                    Diff:  51.51720981654851
+-----------------------
+
+Filtro Harmônico
+-----------------------
+ruidoSalPimenta.jpg             Diff:  125.05446284427846
+ruidoGaussianoSalPimenta.jpg    Diff:  125.47144520130728
+ruidoGaussiano.jpg              Diff:  31.469168455025162
+ruidoPimenta.jpg                Diff:  137.24453399151474
+ruidoSal.jpg                    Diff:  34.091745338501305
+-----------------------
+
+Filtro counter-harmonic
+-----------------------
+ruidoSalPimenta.jpg             Diff:  53.568497391835336
+ruidoGaussianoSalPimenta.jpg    Diff:  53.13538113992536
+ruidoGaussiano.jpg              Diff:  29.95117766225321
+ruidoPimenta.jpg                Diff:  30.069625200581623
+ruidoSal.jpg                    Diff:  86.6944829321386
+----------------------- 
+
+Filtro da mediana
+-----------------------
+ruidoSalPimenta.jpg             Diff:  28.530512468306704
+ruidoGaussianoSalPimenta.jpg    Diff:  28.495258104146412
+ruidoGaussiano.jpg              Diff:  28.013183045877916
+ruidoPimenta.jpg                Diff:  33.12045715067003
+ruidoSal.jpg                    Diff:  44.94209662532813
+-----------------------
+
+Filtro max
+-----------------------
+ruidoSalPimenta.jpg             Diff:  135.2593044618595
+ruidoGaussianoSalPimenta.jpg    Diff:  135.13076841715403
+ruidoGaussiano.jpg              Diff:  52.43497165838192 
+ruidoPimenta.jpg                Diff:  50.12877167854804
+ruidoSal.jpg                    Diff:  141.3677425896548
+-----------------------
+
+
+Filtro min
+-----------------------
+ruidoSalPimenta.jpg            Diff:  140.52431328710458
+ruidoGaussianoSalPimenta.jpg   Diff:  140.52431328710458
+ruidoGaussiano.jpg             Diff:  140.52431328710458
+ruidoPimenta.jpg               Diff:  140.52431328710458
+ruidoSal.jpg                   Diff:  140.52431328710458
+-----------------------
+
+Filtro average
+-----------------------
+ruidoSalPimenta.jpg            Diff:  62.328010108821665
+ruidoGaussianoSalPimenta.jpg   Diff:  62.2780709009712
+ruidoGaussiano.jpg             Diff:  31.27919687119391
+ruidoPimenta.jpg               Diff:  65.79137304591893
+ruidoSal.jpg                   Diff:  63.32141305554821
+-----------------------
+
+Filtro alpha cut
+-----------------------
+ruidoSalPimenta.jpg            Diff:  100.70810955220826
+ruidoGaussianoSalPimenta.jpg   Diff:  100.83886703274784
+ruidoGaussiano.jpg             Diff:  84.825522340473
+ruidoPimenta.jpg               Diff:  87.36863485979116
+ruidoSal.jpg                   Diff:  93.83021038159967
+
+Best results:
+ruidoSalPimenta: median
+ruidoGaussianoSalPimenta: median
+ruidoGaussiano: median
+ruidoPimenta: counter-harmonic
+ruidoSal: harmonic

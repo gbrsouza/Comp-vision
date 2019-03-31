@@ -99,6 +99,22 @@ def max_filter (img, conv_radius):
 
 	return new_img
 
+def min_filter (img, conv_radius):
+	new_img = np.zeros(img.shape, np.uint8)
+	width, height = img.shape
+
+	conv_size = conv_radius * 2 + 1
+	for i in range(conv_radius, width - conv_radius):
+		for j in range(conv_radius, height - conv_radius):
+			valuemin = 0
+			for k in range(-conv_radius, conv_radius + 1):
+				for l in range(-conv_radius, conv_radius+1):
+					if valuemin > img[i + k, j + l]:
+						valuemin = img[i + k, j + l]
+			new_img[i,j] = valuemin
+
+	return new_img
+
 def average_pointer_filter (img, conv_radius):
 	new_img = np.zeros(img.shape, np.uint8)
 	width, height = img.shape
@@ -114,11 +130,11 @@ def average_pointer_filter (img, conv_radius):
 						valuemin = img[i + k, j + l]
 					if valuemax < img[i + k, j + l]:
 						valuemax = img[i + k, j + l]
-			new_img[i,j] = (valuemin+valuemax)/2
+			new_img[i,j] = (float(valuemin)+float(valuemax))/2
 
 	return new_img
 
-def alpha_cuted (img, conv_radius, d):
+def alpha_cuted (img, conv_radius, d = 35):
 	new_img = np.zeros(img.shape, np.uint8)
 	width, height = img.shape
 
@@ -154,11 +170,17 @@ images = [ cv2.imread(name, cv2.IMREAD_GRAYSCALE) for name in paths ]
 # total of images
 size = len(images)
 
+# original image
+og_img = cv2.imread(os.path.join(paste, 'ibirapuera.jpg'), cv2.IMREAD_GRAYSCALE)
+
 # loop
 for k in range (size):
 	split_path = paths[k].split('/')
 	filename = split_path[len(split_path) - 1]
 
-	smoothed_image = alpha_cuted(images[k], 2, 35)
-	cv2.imwrite('smoothed/smoothedAlphaCut-'+ filename, smoothed_image)
-	print ("Diff: ", compare_images(images[k], smoothed_image))
+	if (filename == 'ibirapuera.jpg'): continue
+
+	smoothed_image = alpha_cuted(images[k], 2)
+	cv2.imwrite('smoothed/alpha_cut'+ filename, smoothed_image)
+	print (filename)
+	print ("Diff: ", compare_images(og_img, smoothed_image))
