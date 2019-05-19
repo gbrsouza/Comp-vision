@@ -29,6 +29,7 @@ def passo2 (ans, n, m):
 def code_golomb (n, m):
     # coeficient unit code
     q = n / m
+
     ans = ""
     for i in range(0, q):
         ans += "1";
@@ -46,9 +47,23 @@ def decode (s, m):
 
     r = int (math.log(m, 2))
     sub = s[-r-1:-1] # ignore '\n'
-    return m*count + int(strToBinary(sub),2)
+    print (sub)
+    print (m*count, int(sub,2))
+    return m*count + int(sub,2)
     
-         
+def decode_golomb_without_loss (url, m):
+    arq = open(url, 'r')
+    
+    src_h = decode(arq.readline(),m)
+    src_w = decode(arq.readline(),m)
+
+    img = np.zeros((src_h, src_w), dtype= 'uint8')
+    for i in range (src_h-1):
+        for j in range (src_w-1):
+            img[i,j] = decode(arq.readline(),m)
+    arq.close()
+    cv2.imwrite('decode.png', img)
+
 
 def decode_golomb (url, m):
     arq = open(url, 'r')
@@ -56,46 +71,42 @@ def decode_golomb (url, m):
     src_h = decode(arq.readline(),m)
     src_w = decode(arq.readline(),m)
 
+    print (src_h, src_w)
     img = np.zeros((src_h, src_w), dtype= 'uint8')
-    for i in range(src_h-1):
-        for j in range(src_w-1):
-            pixel = int(arq.readline(),2)
+
+    i = 0
+    j = 0
+    while ( i < src_h ):
+        while (j < src_w ):
+            
+            pixel = decode(arq.readline(),m)
+            print (pixel)
             if (pixel > 255):
                 
                 # get pixel value
-                nPixel = math.fmod(pixel, 1000)
+                nPixel = math.fmod(pixel, 300)
                 
                 # get number of occurences
-                repeat = pixel/1000
+                repeat = pixel/300
                 
                 # add values
-                while (repeat > 0):
+                # print (i,j)
+                while ( (j < src_w) and (repeat > 0) ):
                     img[i,j] = nPixel
                     j += 1
-                    repeat -= 1;
+                    repeat -= 1
                     
-                    # update indexs
-                    if (j > src_w-1):
-                        j = 0
-                        i += 1
+    
             else:
                 img[i,j] = pixel;
-    
-    arq.close()
-    cv2.imwrite('decode.png', img)
-
-def count_values_equals (img, value, i, j, size_h, size_w):
-    count = 0;
-    print ("recebi", i, j)
-    while ( i < size_h ): 
-        while ( j < size_h ):
-            if (img[i,j] == value):
-                count += 1
-            else: return count, i, j
+            
             j += 1
-        
+
         j = 0
         i += 1
+
+    arq.close()
+    cv2.imwrite('decode.png', img)
             
 
 def compress(img, filename, mValue):
@@ -109,10 +120,15 @@ def compress(img, filename, mValue):
     while ( i < src_h ):
         while ( j < src_w ):
             pixel = grayscaled[i,j]
-            count, i , j = count_values_equals(grayscaled, pixel, i, j, src_h, src_w)
-
+            
+            # loop
+            count = 0
+            while ( (j < src_w) and (grayscaled[i,j] == pixel) ):
+                j += 1
+                count += 1
+        
             if (count > 1):
-                result = code_golomb((1000 * count + pixel), mValue)
+                result = code_golomb((300 * count + pixel), mValue)
             else: 
                 result = strToBinary(code_golomb(pixel, mValue))
 
@@ -125,7 +141,7 @@ def compress(img, filename, mValue):
 
     arq.close()
 
-def compress_without_loss(img, filename):
+def compress_without_loss(img, filename, mValue):
     arq = open(filename, 'w')
 
     arq.write(code_golomb(src_h, mValue) + "\n")
@@ -148,6 +164,11 @@ src_h, src_w, _ = img.shape
 
 # define m value
 mValue = 256
+
+# a = code_golomb(253, mValue)
+# print (a)
+# b = decode(a+"\n", mValue)
+# print (b)
 
 filename = "compress.bin"
 compress(grayscaled, filename, mValue)
