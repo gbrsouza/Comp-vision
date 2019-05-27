@@ -3,13 +3,13 @@ from scipy import fftpack
 import cv2
 import math
 
-# def strToBinary (s):
-#     bin_conv = []
-#     for c in s:
-#         binary_val = format(int(c), "b")
-#         bin_conv.append(binary_val)
-#     return ("".join(bin_conv))
-
+import os
+import heapq
+import collections
+import operator
+import ast
+import sys
+import time
 
 def dct2(img):
     return fftpack.dct( fftpack.dct(img, axis=0, norm='ortho' ), axis=1, norm='ortho' )
@@ -23,31 +23,30 @@ def compress(imgPath, filename, mValue):
     img = cv2.imread(imgPath, 0).astype(int)
 
     src_h, src_w = img.shape
-    print (src_h, src_w)
 
-    arq.write(format(src_h, "b") + "\n")
-    arq.write(format(src_w, "b") + "\n")
+    arq.write(format(src_h, "d") + "\n")
+    arq.write(format(src_w, "d") + "\n")
 
     compress = dct2( img )
     compress = np.array(compress, dtype=int)
 
-    for v in compress:
-        for c in v:
-            arq.write(format(c, "b"))
-            arq.write("\n")
-
+    for i in range(src_h):
+        for j in range(src_w):
+            arq.write(format(compress[i,j], "d") + "\n")
+    
     arq.close()
 
 def decode(filename):
     arq = open(filename, 'r')
 
-    src_h = int(arq.readline(), 2)
-    src_w = int(arq.readline(), 2)
+    src_h = int(arq.readline())
+    src_w = int(arq.readline())
 
-    result = np.zeros((src_h, src_w), dtype= 'uint8')
+    result = np.zeros((src_h, src_w), dtype= 'int64')
+
     for i in range(src_h):
         for j in range(src_w):
-            result[i,j] = int(arq.readline(), 2)
+            result[i,j] = int(arq.readline())
 
     result = idct2(result)
 
@@ -55,12 +54,8 @@ def decode(filename):
     cv2.imwrite ("descompress.png", result)
 
 
-# filename = input('Enter a image: ')
-filename = "img/alan.ppm"
+filename = input('Enter a image: ')
 compressname = "compress.bin"
 
 compress( filename, compressname, 256)
 decode (compressname)
-
-# original = idct2(compress)
-# cv2.imwrite ("descompress.png", original)
