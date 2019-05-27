@@ -39,6 +39,7 @@ def code_golomb (n, m):
 
 def decode (s, m):
     count = 0
+    # print ('convertendo: ', s);
 
     for c in s:
         if (c == '1'):
@@ -47,8 +48,8 @@ def decode (s, m):
 
     r = int (math.log(m, 2))
     sub = s[-r-1:-1] # ignore '\n'
-    print (sub)
-    print (m*count, int(sub,2))
+    # print (sub)
+    # print (m*count, int(sub,2))
     return m*count + int(sub,2)
     
 def decode_golomb_without_loss (url, m):
@@ -71,16 +72,16 @@ def decode_golomb (url, m):
     src_h = decode(arq.readline(),m)
     src_w = decode(arq.readline(),m)
 
-    print (src_h, src_w)
+    # print (src_h, src_w)
     img = np.zeros((src_h, src_w), dtype= 'uint8')
 
     i = 0
     j = 0
     while ( i < src_h ):
         while (j < src_w ):
-            
+            print (i, j)     
             pixel = decode(arq.readline(),m)
-            print (pixel)
+            # print (pixel)
             if (pixel > 255):
                 
                 # get pixel value
@@ -118,9 +119,8 @@ def compress(img, filename, mValue):
     i=0
     j=0
     while ( i < src_h ):
-        while ( j < src_w ):
+        while ( j < src_w ):            # print (i, j)
             pixel = grayscaled[i,j]
-            
             # loop
             count = 0
             while ( (j < src_w) and (grayscaled[i,j] == pixel) ):
@@ -132,13 +132,11 @@ def compress(img, filename, mValue):
             else: 
                 result = strToBinary(code_golomb(pixel, mValue))
 
-            print (count, i, j)
             arq.write(result)
             arq.write("\n")
             j += 1
         j=0
         i += 1
-
     arq.close()
 
 def compress_without_loss(img, filename, mValue):
@@ -156,7 +154,7 @@ def compress_without_loss(img, filename, mValue):
     arq.close()
 
 # load image
-img = cv2.imread("cam_flat.ppm")
+img = cv2.imread("img/alan.ppm")
 grayscaled = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # get height and width
